@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `todos`
 --
-
+USE simple_todo
 DROP TABLE IF EXISTS `todos`;
 CREATE TABLE IF NOT EXISTS `todos` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
