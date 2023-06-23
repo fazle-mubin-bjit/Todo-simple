@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: mysql-todo
+  labels: 
+    app: mysql   
+spec:
+  containers:
+    - name: mysql
+      image: mysql:latest
+      env:
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config-todo
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config-todo
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config-todo
+              key: MYSQL_DATABASE
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config-todo
+              key: MYSQL_ROOT_PASSWORD
+      volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+  volumes:
+    - name: mysql-data
+      persistentVolumeClaim:
+        claimName: mysql-pvc-todo
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+  - protocol: TCP
+    port: 3306 
+    targetPort: 3306
+  type: ClusterIP          

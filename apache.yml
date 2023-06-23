@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-deployment-todo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apache-php
+  template:
+    metadata:
+      labels:
+        app: apache-php
+    spec:
+       volumes:
+       - name: pv-todo
+         persistentVolumeClaim:
+           claimName: pvc-todo
+       containers:
+        - name: apache-php
+          image: fazlemubin/todo_jenkins_dockerized
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: "/var/www/html"
+              name: pv-todo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-service-todo
+spec:
+  selector:
+    app: apache-php
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30091
+  type: NodePort
+
