@@ -1,5 +1,5 @@
 <?php 
-	$connection = mysqli_connect('localhost','root','','simple_todo');
+	$connection = mysqli_connect('mysql-service','root','mypassword','simple_todo');
 	 
 	 $id = '';
 
@@ -142,7 +142,7 @@
 </head>
 <body>
 <div class="wrapper">
-	<form method="post" action="todo.php">
+	<form method="post" action="index.php">
 		<div>
 			<center>
 			<input type="text" name="todo" placeholder="create new todo" value="<?php if (isset($_POST['update_id'])) {echo $data['todo'];}  ?>" required>
@@ -160,7 +160,7 @@
 	foreach ($row as $todos) { ?>
 		<center>
 		<?php echo $todos['todo'];  ?>
-	  		<button><a href='todo.php?delete_id=<?php echo $todos['id']; ?>'>Delete</a></button>
+	  		<button><a href='index.php?delete_id=<?php echo $todos['id']; ?>'>Delete</a></button>
 				<form class="form" method="post" action="">
 					<input type="hidden" name="update_id" value="<?php  echo $todos['id']; ?>">
 					<input type="submit" value="Update" name="update">
@@ -168,7 +168,7 @@
 	   <?php if ($todos['completed'] == 1) {
 	  	echo "Completed";
 	  }else{ ?>
-	  			<button><a href='todo.php?marking_id=<?php echo $todos['id']; ?>'>Mark complete</a></button>
+	  			<button><a href='index.php?marking_id=<?php echo $todos['id']; ?>'>Mark complete</a></button>
 	 <?php } ?>
 		<hr>
 	</center>
